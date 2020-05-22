@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #008081;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+  hr {
+    margin: 0;
+  }
+
+  .container {
+    padding: 5px;
+    display: flex;
+  }
+
+  .button {
+    padding: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    background-color: #c0c0c0;
+    border-top: 2px solid #ffffff;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+    border-left: 2px solid #ffffff;
+
+    &:active {
+      background-color: #dfdfdf;
+      border-top: 2px solid #808080;
+      border-right: 2px solid #ffffff;
+      border-bottom: 2px solid #ffffff;
+      border-left: 2px solid #808080;
+    }
+  }
+}
