@@ -7,7 +7,8 @@
     "start": "node index.js",
     "server": "nodemon server/index.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "production": "concurrently \"npm run server\" \"serve -s client/build -l 80\""
   },
   "author": "",
   "license": "ISC",
