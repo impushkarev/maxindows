@@ -10,7 +10,8 @@ require('dotenv').config()
 
 const app = express()
 const credentials = { key: fs.readFileSync('./server.key'), 
-                      cert: fs.readFileSync('./server.crt')}
+                      cert: fs.readFileSync('./server.crt'),
+                      ca: fs.readFileSync('./server.pem')}
 const [PORT, SPORT] = [process.env.PORT || 80, process.env.SPORT || 443]
 
 app.use((req, res, next) => {
