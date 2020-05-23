@@ -1,11 +1,17 @@
 const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
+
+const http = require('http')
+const https = require('https')
+const fs = require('fs')
+
 require('dotenv').config()
 
 const app = express()
-
-const PORT = process.env.PORT || 8080
+const [PORT, SPORT] = [process.env.PORT || 8080, process.env.PORT || 8443]
+const credentials = { key: fs.readFileSync('./key.pem'), 
+                      cert: fs.readFileSync('./certificate.crt')}
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*")
@@ -30,14 +36,11 @@ const start = async () => {
       useCreateIndex: true,
     })
     
+    const httpServer = http.createServer(app)
+    const httpsServer = https.createServer(credentials, app)
 
-    // app.use((req, res, next) => {
-    //   res.send(process.env.DB)
-    // })
-    
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`)
-    })
+    httpServer.listen(PORT)
+    httpsServer.listen(SPORT)
   }
   catch(e) {
     console.log(`Server Error ${e.message}`)
