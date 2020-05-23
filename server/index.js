@@ -9,9 +9,9 @@ const fs = require('fs')
 require('dotenv').config()
 
 const app = express()
-const [PORT, SPORT] = [process.env.PORT || 8080, process.env.PORT || 8443]
-const credentials = { key: fs.readFileSync('./key.pem'), 
-                      cert: fs.readFileSync('./certificate.crt')}
+const credentials = { key: fs.readFileSync('./server.key'), 
+                      cert: fs.readFileSync('./server.crt')}
+const [PORT, SPORT] = [process.env.PORT || 80, process.env.SPORT || 443]
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*")
@@ -35,7 +35,7 @@ const start = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true,
     })
-    
+  
     const httpServer = http.createServer(app)
     const httpsServer = https.createServer(credentials, app)
 
