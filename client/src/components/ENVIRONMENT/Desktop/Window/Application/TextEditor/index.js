@@ -10,23 +10,27 @@ export default function TextEditor(props) {
   const [valueTextarea, setValueTextarea] = useState(appData[0].value)
   const [valueTextareaBS, setValueTextareaBS] = useState(appData[0].value)
 
+  const isEdit = valueTextareaBS !== valueTextarea
+
   useEffect(() => {
     setValueTextarea(appData[0].value)
     setValueTextareaBS(appData[0].value)
   }, [appData])
   useEffect(() => {
-    valueTextareaBS !== valueTextarea ? appStatus('*') : appStatus('')
-  }, [valueTextarea])
+    isEdit ? appStatus('*') : appStatus('')
+  }, [valueTextarea, valueTextareaBS, appStatus])
 
   const saveApp = () => {
     appStatus('')
+    setValueTextareaBS(valueTextarea)
     axios.put(`/api/appdata/edit/${app._id}`, {value: valueTextarea})
   }
   const keyDown = (e) => {
     //SAVE FILE
     if (e.ctrlKey && e.which === 83) {
       e.preventDefault()
-      saveApp()
+
+      return isEdit ? saveApp() : null
     }
   }
 

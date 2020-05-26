@@ -8,16 +8,17 @@ export default function FileActions(props) {
   const deleteApp = async (el) => {
     const id = isFile.file.id
 
+    // DEL APP
     await axios.delete(`/api/app/delete/${id}`)
-    .then(res => {
-      const data = res.data
-      setDesktopApp(desktopApps.filter(app => {if (app._id !== id) return app}))
-    })
+    .then(
+      setDesktopApp(desktopApps.filter(app => { return app._id !== id ? app : null }))
+    )
+    // DEL APP DATA
     await axios.delete(`/api/appdata/delete/${id}`)
   }
-  const renameApp = (el) => {
-    console.log(isFile.file.id)
-  }
+  // const renameApp = (el) => {
+  //   console.log(isFile.file.id)
+  // }
 
   return (
     <>

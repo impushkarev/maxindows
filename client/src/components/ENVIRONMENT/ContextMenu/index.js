@@ -24,7 +24,7 @@ export default function ContextMenu(props) {
     }
     document.addEventListener('contextmenu', (e) => rClick(e))
 
-    console.log([<OpenFile />, <CreateFile />, <FileActions />])
+    // console.log([<OpenFile />, <CreateFile />, <FileActions />])
   }, [])
   useEffect(() => {
     if (contextMenu) {
@@ -39,7 +39,7 @@ export default function ContextMenu(props) {
       <ul className="menu__list_s">
         { isFile.is ? 
           <>
-            <OpenFile />
+            <OpenFile openApp={[props.openApp, isFile.file.id]} />
             <hr />
           </>
         : null }

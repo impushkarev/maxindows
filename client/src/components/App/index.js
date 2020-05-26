@@ -37,14 +37,49 @@ export default function App() {
     .then(setDesktopApp)
   }
 
+  // APP (WINDOWS)
+  //// ACTIVATE APP
+  const activateApp = (app) => {
+    setActiveApplication(app)
+  }
+  //// OPEN APP
+  const openApp = (app) => {
+    const id = applications.length ? applications[applications.length - 1].id + 1 : 1
+
+    const fA = desktopApps.find(appl => appl._id === app ? appl : null)
+    setApplication([...applications, {...fA, id: id, hidden: false}])
+    setActiveApplication(id)
+  }
+  //// CLOSE APP
+  const closeApp = (id) => {
+    setActiveApplication(0)
+    setApplication(applications.filter((app) => {
+      return app.id !== id
+    }))
+  }
+  //// HIDE APP
+  const hideApp = (id) => {
+    setActiveApplication(0)
+    setApplication(applications.map((app) => {
+      if (app.id === id)
+        app.hidden = true
+      return app
+    }))
+  }
+
   return (
     <React.Fragment>
-      <Desktop  applications={[applications, setApplication]}
-                activeApplication={[activeApplication, setActiveApplication]}
+      <Desktop  openApp={openApp}
+                closeApp={closeApp}
+                hideApp={hideApp}
+                activateApp={activateApp}
+                applications={applications}
+                activeApplication={activeApplication}
                 desktopApps={desktopApps} />
       <TaskBar  applications={applications}
                 activeApplication={[activeApplication, setActiveApplication]} />
-      <ContextMenu  desktopApps={[desktopApps, setDesktopApp]} />
+      <ContextMenu  openApp={openApp}
+                    desktopApps={[desktopApps, setDesktopApp]} />
     </React.Fragment>
   )
 }

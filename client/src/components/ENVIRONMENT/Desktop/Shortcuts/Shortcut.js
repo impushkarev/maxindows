@@ -8,9 +8,7 @@ import './style.scss'
 export default function Shortcut(props) {
   const app = props.app
   const style = props.style
-  const setActiveApplication = props.setActiveApplication
-  const [applications, setApplication] = props.application
-  const [activeDesktopApp, setActiveDesktopApp] = props.activeDesktopApp
+  const [active, setActiveDesktopApp] = props.active
   const [shortcutStyle, setShortcutStyle] = useState({top: style.top, left: style.left, opacity: 1})
 
   const moveShortcut = (e) => {
@@ -30,14 +28,13 @@ export default function Shortcut(props) {
   }
 
   return (
-    <div  className={`shortcut ${activeDesktopApp === app.id ? 'active' : ''}`}
-          onMouseDown={(e) => {moveShortcut(e)
-                              setActiveDesktopApp(app.id)}}
+    <div  className={`shortcut ${active ? 'active' : ''}`}
+          onMouseDown={(e) => { moveShortcut(e)
+                                setActiveDesktopApp(app.id)}}
           style={shortcutStyle}
           id={app._id} >
       <ShortcutThumb  app={app}
-                      applications={[applications, setApplication]}
-                      setActiveApplication={setActiveApplication} />
+                      openApp={props.openApp} />
       <ShortcutTitle  app={app} />
     </div>
   )

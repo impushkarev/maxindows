@@ -5,8 +5,8 @@ import Shortcut from './Shortcuts/Shortcut'
 import './style.scss'
 
 export default function Desktop(props) {
-  const [applications, setApplication] = props.applications
-  const [activeApplication, setActiveApplication] = props.activeApplication
+  const applications = props.applications
+  const activeApplication = props.activeApplication
   const desktopApps = props.desktopApps
   const [activeDesktopApp, setActiveDesktopApp] = useState(0)
 
@@ -19,20 +19,21 @@ export default function Desktop(props) {
               return <Shortcut  app={app} 
                                 key={app.id}
                                 style={style}
-                                application={[applications, setApplication]}
-                                activeDesktopApp={[activeDesktopApp, setActiveDesktopApp]}
-                                setActiveApplication={setActiveApplication} />
+                                openApp={props.openApp}
+                                activateApp={props.activateApp}
+                                active={[activeDesktopApp === app.id, setActiveDesktopApp]} />
             }
           )
         }
       </div>
       {
         applications.map((app) => {
-            return <Window app={app}
-                    key={app.id}
-                    active={activeApplication === app.id ? true : false}
-                    application={[applications, setApplication]}
-                    setActiveApplication={setActiveApplication} />
+            return <Window  app={app}
+                            key={app.id}
+                            closeApp={props.closeApp}
+                            hideApp={props.hideApp}
+                            activateApp={props.activateApp}
+                            active={activeApplication === app.id} />
           }
         )
       }

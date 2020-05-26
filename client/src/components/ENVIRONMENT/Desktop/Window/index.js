@@ -5,15 +5,11 @@ import './style.scss'
 
 export default function Window(props) {
   const app = props.app
-  const [appStatus, setAppStatus] = useState('')
   const active = props.active
-  const setActiveApplication = props.setActiveApplication
-  const [applications, setApplication] = props.application
+  const [appStatus, setAppStatus] = useState('')
   const [windowStyle, setWindowStyle] = useState({top: 0, left: 0, opacity: 1, cursor: 'wait'})
 
-  const activateApp = (id) => {
-    setActiveApplication(id)
-  }
+  // MOVE WINDOW
   const moveApp = (e) => {
     if (e.button !== 2) {
       const [sX, sY] = [e.clientX, e.clientY]
@@ -28,25 +24,12 @@ export default function Window(props) {
       document.addEventListener('mouseup', mouseUp)
     }
   }
-  const closeApp = (id) => {
-    setActiveApplication(0)
-    setApplication(applications.filter((app) => {
-      return app.id !== id
-    }))
-  }
-  const hideApp = (id) => {
-    setActiveApplication(0)
-    setApplication(applications.map((app) => {
-      if (app.id === id)
-        app.hidden = true
-      return app
-    }))
-  }
+  
 
   return (
     <section  className={`window ${active ? 'active' : ''} ${app.hidden ? 'hide' : ''}`}  
               style={windowStyle}
-              onMouseDown={() => {activateApp(app.id)}}>
+              onMouseDown={() => {props.activateApp(app.id)}}>
       <div  className="window__header"
             onMouseDown={(e) => {moveApp(e)}} >
         <div className="container">
@@ -56,11 +39,11 @@ export default function Window(props) {
           <p className="window__title">{`${app.name} ${appStatus}`}</p>
           <div className="window__actions">
             <div  className="window__hide button"
-                  onClick={() => {hideApp(app.id)}}>
+                  onClick={() => {props.hideApp(app.id)}}>
               _
             </div>
             <div  className="window__close button"
-                  onClick={() => {closeApp(app.id)}}>
+                  onClick={() => {props.closeApp(app.id)}}>
               x
             </div>
           </div>
@@ -69,7 +52,7 @@ export default function Window(props) {
       <div className="window__body">
         <Application  app={app} 
                       appStatus={setAppStatus}
-                      closeApp={closeApp} 
+                      closeApp={props.closeApp} 
                       style={[windowStyle, setWindowStyle]} />
       </div>
     </section>
