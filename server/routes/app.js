@@ -1,8 +1,13 @@
 const {Router} = require ('express')
+const bodyParser = require("body-parser")
 const appr = Router()
 
 const App = require('../models/App')
+const AppData = require('../models/AppData')
 
+appr.use(bodyParser.json())
+
+// ПОЛУЧИТЬ ПРИЛОЖЕНИЯ
 appr.get('/', async (req, res, next) => {
   try {
     const apps = await App.find({})
@@ -10,29 +15,57 @@ appr.get('/', async (req, res, next) => {
     res.json({apps: apps})
   }
   catch (e) {
-    error()
+    error(res, e)
   }
 })
-
 // ДОБАВИТЬ ПРИЛОЖЕНИЕ
-
-/*
-router.get('/create', async (req, res, next) => {
+appr.post('/create', async (req, res, next) => {
   try {
-    const app = new App({icon: 'https://psv4.userapi.com/c856416/u177332655/docs/d14/afa4c5e088eb/pixil-frame-0_10.png?extra=uu-tzkkPEh7izeqRxzkrOqeShuclvYFdaCEmPQQ22RVYIeNkrD0juBHiiktAMv4dOtyLWL8N14sodtjxgmzBfm4UDSKYG_7I565YHLuG0cUSjG85WkLAEt5xw5DXyFgBRrPigIG6n9qbyjhHNTWZ2KUwLw',
-                          app: 'Text Editor',
-                          name: 'NOT EDITABLE'})
+    const data = req.body
+    const app = await new App({
+      icon: data.icon,
+      app: data.app,
+      name: data.name
+    })
+    await app.save()
+
+    res.json(app)
+  } 
+  catch (e) {
+    error(res, e)
+  }
+})
+// ИЗМЕНИТЬ ПРИЛОЖЕНИЕ
+appr.put('/edit/:id', async (req, res, next) => {
+  try {
+    const data = req.body
+    const app = await App.findById(req.params.id)
+
+    if (data.icon !== undefined)
+      app.icon = data.icon
+    if (data.name !== undefined)
+      app.name = data.name
 
     app.save()
 
-    res.status(201).json({message: 'Приложение создано'})
+    res.json(app)
   }
   catch (e) {
-    error()
+    error(res, e)
   }
 })
-*/
+// УДАЛИТЬ ПРИЛОЖЕНИЕ
+appr.delete('/delete/:id', async (req, res, next) => {
+  try {
+    const app = await App.findByIdAndDelete(req.params.id)
 
-const error = () => {res.status(500).json({message: 'Server Error', isError: true})}
+    res.json(app)
+  }
+  catch (e) {
+    error(res, e)
+  }
+})
+
+const error = (res, e) => {res.status(500).json({message: 'Server Error', isError: true, error: e})}
 
 module.exports = appr

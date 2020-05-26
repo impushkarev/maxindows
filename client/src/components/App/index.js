@@ -1,39 +1,50 @@
 import React, {useState, useEffect} from 'react'
-import TaskBar from 'components/TaskBar'
-import Desktop from 'components/Desktop'
 import axios from 'axios'
+
+import TaskBar from 'components/ENVIRONMENT/TaskBar'
+import Desktop from 'components/ENVIRONMENT/Desktop'
+import ContextMenu from 'components/ENVIRONMENT/ContextMenu'
 
 import './style.scss'
 
 export default function App() {
+  const [isMounted, setIsMounted] = useState(false)
+
+  const [desktopApps, setDesktopApp] = useState([])
   const [applications, setApplication] = useState([])
   const [activeApplication, setActiveApplication] = useState(0)
-  const [desktopApps, setDesktopApp] = useState([])
 
   useEffect(() => {
-    //GET DATA
-    axios.get('/api/app').then(res => {
+    if (!isMounted) {
+      getApps()
+      setIsMounted(true)
+    }
+  }, [desktopApps])
+
+  //GET DATA
+  const getApps = () => {
+    axios.get('/api/app')
+    .then(res => {
       const data = res.data
       const apps = data.apps
-
+      // ADD APP INDEX
       apps.map((app, i) => {
         app.id = i + 1
         return app
       })
-
-      setDesktopApp([...desktopApps, ...apps])
+      return apps
     })
-  }, [])
+    .then(setDesktopApp)
+  }
 
   return (
     <React.Fragment>
       <Desktop  applications={[applications, setApplication]}
                 activeApplication={[activeApplication, setActiveApplication]}
-                desktopApps={desktopApps}
-      />
+                desktopApps={desktopApps} />
       <TaskBar  applications={applications}
-                activeApplication={[activeApplication, setActiveApplication]} 
-      />
+                activeApplication={[activeApplication, setActiveApplication]} />
+      <ContextMenu  desktopApps={[desktopApps, setDesktopApp]} />
     </React.Fragment>
   )
 }

@@ -11,6 +11,10 @@ body {
     margin: 0;
   }
 
+  #root {
+    overflow: hidden;
+    position: relative;
+  }
   .container {
     padding: 5px;
     display: flex;
@@ -32,6 +36,101 @@ body {
       border-right: 2px solid #ffffff;
       border-bottom: 2px solid #ffffff;
       border-left: 2px solid #808080;
+    }
+  }
+  .arrow {
+    float: right;
+  }
+  .menu__list_s {
+    margin: 0;
+    padding: 2px;
+    list-style: none;
+    background-color: #c2bdc1;
+    border-top: 2px solid #ffffff;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+    border-left: 2px solid #ffffff;
+
+    .list__item {
+      color: #000000;
+      margin: -2px -4px;
+      position: relative;
+
+      .list__item__container {
+        margin: 2px;
+        padding: 2px;
+        min-width: 150px;
+        cursor: pointer;
+        padding: 2px 6px 2px 30px;
+        
+        .list__submenu {
+          top: 0;
+          right: 0;
+          visibility: hidden;
+          position: absolute;
+          transform: translateX(100%);
+        }
+      }
+      &:hover {
+
+        &>.list__item__container {
+          color: #ffffff;
+          background-color: #06056b;
+
+          &>.list__submenu {
+            top: -4px;
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+  .menu__list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;   
+
+    .list__item {
+      cursor: pointer;
+      padding: 2px 6px;
+      position: relative;
+
+      .list__submenu {
+        left: 0;
+        margin: 0 2px;
+        padding: 2px 0;
+        list-style: none;
+        position: absolute;
+        color: #000000;
+        visibility: hidden;
+        background-color: #c2bdc1;
+        border-top: 2px solid #ffffff;
+        border-right: 2px solid #808080;
+        border-bottom: 2px solid #808080;
+        border-left: 2px solid #ffffff;
+
+        .submenu__item {
+          min-width: 150px;
+          padding: 2px 6px 2px 30px;
+
+          &:hover {
+            color: #ffffff;
+            background-color: #06056b;
+          }
+        }
+      }
+      &:hover {
+        color: #ffffff;
+        background-color: #06056b;
+
+        .list__submenu {
+          visibility: visible;
+        }
+      }
+      &::first-letter {
+        text-decoration: underline;
+      }
     }
   }
 }
